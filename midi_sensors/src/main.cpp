@@ -104,14 +104,15 @@ void MIDI_control (void *param){
   Serial.println("Waiting for connections...");
 
   while(true){
-      
-    if(BLEMidiServer.isConnected()) {             // If we've got a connection, we send an A4 during one second, at full velocity (127)
+
     int note = d1;
     int velocity = d2;
-    float pitch = d3/127.0;
+    int pitch = d3;
+
+    if(BLEMidiServer.isConnected()) {             // If we've got a connection, we send an A4 during one second, at full velocity (127)
 
     if (note > 50){
-      BLEMidiServer.pitchBend(1,1,pitch);
+      BLEMidiServer.pitchBend(1,pitch,(float)4.0);
       BLEMidiServer.noteOn(1,note,velocity);
       delay(10);
       
@@ -120,15 +121,14 @@ void MIDI_control (void *param){
 
       delay(1);
     }
-
-    Serial.print("C: ");
+  }
+    Serial.print("Note: ");
     Serial.print(note);
     Serial.print(",");
     Serial.print(velocity);
     Serial.print(",");
     Serial.print(pitch);
     Serial.println();
-  }
   }
 }
 
