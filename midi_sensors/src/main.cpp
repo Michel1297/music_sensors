@@ -92,6 +92,7 @@ void sensors_control (void *param){
     d4 = (int)map(abs(gyroZ*180*PI),0,360,0,127); if(d4>127){d4 = 127;}
 
 
+
   }
 
   
@@ -106,20 +107,19 @@ void MIDI_control (void *param){
   while(true){
 
     int note = d1;
-    int velocity = d2;
-    int pitch = d3;
+    uint8_t velocity = d4;
+    float pitch = d3/10.0;
 
     if(BLEMidiServer.isConnected()) {             // If we've got a connection, we send an A4 during one second, at full velocity (127)
 
     if (note > 50){
-      BLEMidiServer.pitchBend(1,pitch,(float)4.0);
+      BLEMidiServer.pitchBend(1,pitch,4.0F);
       BLEMidiServer.noteOn(1,note,velocity);
-      delay(10);
-      
+      delay(30);
       BLEMidiServer.noteOff(1,note,velocity);
       
 
-      delay(1);
+      delay(10);
     }
   }
     Serial.print("Note: ");
